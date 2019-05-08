@@ -47,7 +47,7 @@ spec:
             command:
             - sh
             - -c
-            - "redis-cli -h $(hostname) ping"
+            - "redis-cli -h $(hostname) cluster info | sed -ne '/^cluster_state:/p; /^cluster_state:ok/!q1; q0'"
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
@@ -76,6 +76,7 @@ spec:
         configMap:
           name: {{ template "redis-cluster.fullname" . }}
           defaultMode: 0755
+  podManagementPolicy: Parallel
   volumeClaimTemplates:
   - metadata:
       name: data

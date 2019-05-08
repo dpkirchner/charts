@@ -15,6 +15,16 @@ redisConfig: |-
 service:
   clientPort: 6379
   gossipPort: 16379
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 1
+readinessProbe:
+  initialDelaySeconds: 15
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 1
 statefulset:
   affinity: |
     podAntiAffinity:
